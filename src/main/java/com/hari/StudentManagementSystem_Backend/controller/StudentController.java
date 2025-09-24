@@ -14,20 +14,20 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/students")
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class StudentController {
 
     @Autowired
     private StudentService studentService;
 
-    // ✅ Get All Students
+
     @GetMapping
     public ResponseEntity<List<Student>> getAllStudents() {
         List<Student> students = studentService.getAllStudents();
         return ResponseEntity.ok(students);
     }
 
-    // ✅ Get a Student by ID
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable String id) {
         Optional<Student> student = studentService.getStudentById(id);
@@ -39,14 +39,13 @@ public class StudentController {
         }
     }
 
-    // ✅ Add a New Student (Fixing `studentRepository` issue)
     @PostMapping
     public ResponseEntity<Map<String, String>> addStudent(@RequestBody Student student) {
         Map<String, String> response = studentService.addStudent(student);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // ✅ Update an Existing Student (Fixing Static Call Issue)
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateStudent(@PathVariable String id, @RequestBody Student studentDetails) {
         Student updatedStudent = studentService.updateStudent(id, studentDetails);
@@ -58,7 +57,7 @@ public class StudentController {
         }
     }
 
-    // ✅ Delete a Student
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteStudent(@PathVariable String id) {
         Optional<Student> student = studentService.getStudentById(id);

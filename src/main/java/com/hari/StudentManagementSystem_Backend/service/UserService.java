@@ -25,7 +25,7 @@ public class UserService {
 
     // ✅ Get user by username (Primary Key)
     public Optional<User> getUserByUsername(String username) {
-        return userRepository.findById(username);  // ✅ Uses username as ID
+        return userRepository.findByUsername(username);  // ✅ Uses username as ID
     }
 
     // ✅ Add new user
@@ -54,5 +54,16 @@ public class UserService {
     // ✅ Save user (for password reset)
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    public User validateUser(String username, String rawPassword) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (passwordEncoder.matches(rawPassword, user.getPassword())) {
+                return user;
+            }
+        }
+        return null;
     }
 }

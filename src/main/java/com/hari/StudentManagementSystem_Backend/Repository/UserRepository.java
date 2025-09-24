@@ -4,7 +4,11 @@ import com.hari.StudentManagementSystem_Backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {  // ✅ ID type is String (username)
-    User findByUsername(String username);  // ✅ Fetch user by username
+public interface UserRepository extends JpaRepository<User, String> {
+    Optional<User> findByUsername(String username);
+
+
 }

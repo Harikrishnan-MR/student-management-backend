@@ -17,14 +17,13 @@ import java.util.Optional;
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
-    
+
     @Autowired
     private UserService userService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    // ✅ Check if the user is authenticated (Session-Based)
     @GetMapping("/status")
     public ResponseEntity<?> checkAuthStatus(HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -35,15 +34,14 @@ public class AuthController {
         }
     }
 
-    // ✅ Login User (Session-Based)
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User user, HttpSession session) {
-        Optional<User> optionalUser = userService.getUserByUsername(user.getUsername());
         Map<String, Object> response = new HashMap<>();
 
-        if (optionalUser.isPresent() && passwordEncoder.matches(user.getPassword(), optionalUser.get().getPassword())) {
-            User existingUser = optionalUser.get();
-            session.setAttribute("user", existingUser); // Store user in session
+        User validUser = userService.validateUser(user.getUsername(), user.getPassword());
+
+        if (validUser != null) {
+            session.setAttribute("user", validUser); // Store user in session
             response.put("message", "Login successful");
             response.put("status", "success");
             return ResponseEntity.ok(response);
@@ -54,14 +52,15 @@ public class AuthController {
         }
     }
 
-    // ✅ Register User
+
+
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody User user) {
         userService.addUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "User registered successfully"));
     }
 
-    // ✅ Reset Password
+
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
         String username = request.get("username");
@@ -79,7 +78,7 @@ public class AuthController {
         }
     }
 
-    // ✅ Logout User
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpSession session) {
         session.invalidate();

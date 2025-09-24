@@ -16,17 +16,17 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    // ✅ Get all students
+
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
 
-    // ✅ Get a student by ID
+
     public Optional<Student> getStudentById(String id) {
         return studentRepository.findById(id);
     }
 
-    // ✅ Add a new student
+
     public Map<String, String> addStudent(Student student) {
         Optional<Student> existingStudent = studentRepository.findById(student.getId());
 
@@ -44,10 +44,10 @@ public class StudentService {
         return response;
     }
 
-    // ✅ Update an existing student
+
     public Student updateStudent(String id, Student updatedStudent) {
         return studentRepository.findById(id).map(student -> {
-        	student.setFirstname(updatedStudent.getFirstname()); // ✅ Fixed
+        	student.setFirstname(updatedStudent.getFirstname());
             student.setSurname(updatedStudent.getSurname());
             student.setAge(updatedStudent.getAge());
             student.setDate_of_birth(updatedStudent.getDate_of_birth()); // ✅ Fixed
@@ -67,12 +67,11 @@ public class StudentService {
             student.setSem7(updatedStudent.getSem7());
             student.setSem8(updatedStudent.getSem8());
             student.setTot_arr(updatedStudent.getTot_arr()); // ✅ Fixed
-            student.setPhoto(updatedStudent.getPhoto());
             return studentRepository.save(student);
         }).orElse(null); // Return null if student not found
     }
 
-    // ✅ Delete a student by ID
+
     public void deleteStudent(String id) {
         studentRepository.deleteById(id);
     }
