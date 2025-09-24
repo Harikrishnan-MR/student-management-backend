@@ -82,6 +82,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>studmgmt</finalName>
 		<plugins>
 			<!-- Compiler Plugin -->
 			<plugin>
