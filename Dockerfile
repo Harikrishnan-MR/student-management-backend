@@ -1,5 +1,5 @@
 # Step 1: Build jar using Maven
-FROM maven:3.9.2-jdk-17 AS build
+FROM maven:3.8.4-openjdk-17 AS build
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Step 2: Run jar using lightweight JDK
-FROM openjdk:17-alpine
+FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
